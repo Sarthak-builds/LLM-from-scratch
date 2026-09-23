@@ -16,6 +16,15 @@ VOCAB_SIZE = tokenizer.n_vocab
 token_embedding_layer = nn.Embedding(num_embeddings=VOCAB_SIZE, embedding_dim=EMBED_DIM)
 pos_embedding_layer   = nn.Embedding(num_embeddings=MAX_LENGTH, embedding_dim=EMBED_DIM)
 
+# TODO (later): add a RoPE variant as an alternative positional scheme, switchable
+# via config. Absolute (above) adds learned position vectors at the input stage;
+# RoPE instead rotates query/key vectors inside each attention layer, so it would
+# disable the additive path / pos_embedding_layer and pass positions into
+# attention instead. Plan is to train both variants and compare.
+
+output_layer = nn.Linear(in_features=EMBED_DIM, out_features=VOCAB_SIZE, bias=False)
+output_layer.weight = token_embedding_layer.weight      # weight tying: shared parameters
+
 
 def get_input_embeddings(input_ids):
     """
@@ -31,6 +40,14 @@ def get_input_embeddings(input_ids):
     return token_embeddings + pos_embeddings                      # broadcasts pos across batch dim
 
 
+def get_logits(hidden):
+    """
+    hidden:  (batch_size, seq_len, embed_dim)
+    returns: (batch_size, seq_len, vocab_size) — logits per position over the full vocab
+    """
+    return output_layer(hidden)
+
+
 if __name__ == "__main__":
     raw_text = LLM_BOOK_PATH.read_text(encoding="utf-8")
 
@@ -39,6 +56,8 @@ if __name__ == "__main__":
     input_ids, target_ids = next(iter(loader))
 
     input_embeddings = get_input_embeddings(input_ids)
+    logits = get_logits(input_embeddings)
 
     print(f"Token IDs shape:        {input_ids.shape}")
     print(f"Input embeddings shape: {input_embeddings.shape}")
+    print(f"Logits shape:           {logits.shape}")
