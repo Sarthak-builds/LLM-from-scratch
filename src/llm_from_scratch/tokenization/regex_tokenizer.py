@@ -1,5 +1,6 @@
 import re
-import os
+from .._paths import LLM_BOOK_PATH
+
 
 class SimpleTokenizerV2:
     def __init__(self, vocab):
@@ -22,13 +23,8 @@ class SimpleTokenizerV2:
         return text
 
 if __name__ == "__main__":
-    # Pointing to the llm-book.txt 
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    file_path = os.path.join(base_dir, "assets", "llm-book.txt")
-    
-    with open(file_path, "r", encoding="utf-8") as f:
-        raw_text = f.read()
-        
+    raw_text = LLM_BOOK_PATH.read_text(encoding="utf-8")
+
     print("Total number of characters:", len(raw_text))
     
     preprocessed = re.split(r'([,.:;?_!"()\']|--|\s)', raw_text)
@@ -44,12 +40,4 @@ if __name__ == "__main__":
     print("Vocabulary size:", vocab_size)
     
     tokenizer = SimpleTokenizerV2(vocab)
-    
-    print("\n--- Running Tokenizer V2 Example ---")
 
-    example_text = "This is a completely unknownwordto test the <|unk|> functionality <|endoftext|>"
-    print(f"Original Text: '{example_text}'")
-    encoded_ids = tokenizer.encode(example_text)
-    print(f"Encoded IDs:   {encoded_ids}")
-    decoded_text = tokenizer.decode(encoded_ids)
-    print(f"Decoded Text:  '{decoded_text}'")
