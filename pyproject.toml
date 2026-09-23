@@ -7,7 +7,11 @@ authors = [
     { name = "Sarthak-builds", email = "sarthakshiroty04@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "tiktoken>=0.14.0",
+    "torch>=2.14.0",
+    "sentencepiece>=0.2.0",
+]
 
 [project.scripts]
 llm-from-scratch = "llm_from_scratch:main"
