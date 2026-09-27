@@ -25,3 +25,18 @@ dist/
 
 # Local notes / documentation
 documentation/
+
+# Training artifacts
+checkpoints/
+loss_curves*.png
+train_log.jsonl
+train_output.log
+
+# Tokenized datasets (rebuild with src/llm_from_scratch/data/wikitext_prepare.py)
+data/wikitext/
+*.bin
+*.partial
+
+# Scratch dirs from smoke tests
+testdata/
+testckpt/

@@ -1,3 +1,0 @@
-# Ignore trained SentencePiece model binaries
-*.model
-*.vocab
