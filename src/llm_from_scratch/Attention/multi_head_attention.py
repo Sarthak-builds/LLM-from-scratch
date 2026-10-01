@@ -57,8 +57,8 @@ class MultiHeadAttention(nn.Module):
 
 
 if __name__ == "__main__":
-    from ..data.embedding_layer import EMBED_DIM
-    from .self_attention_with_params import get_input_sequence
+    from .self_attention_with_params import (DEMO_EMBED_DIM,
+                                             get_input_sequence)
 
     torch.manual_seed(123)
 
@@ -66,8 +66,8 @@ if __name__ == "__main__":
     context_length = inputs.shape[1]
 
     mha = MultiHeadAttention(
-        d_in=EMBED_DIM,
-        d_out=EMBED_DIM,
+        d_in=DEMO_EMBED_DIM,
+        d_out=DEMO_EMBED_DIM,
         context_length=context_length,
         dropout=0.0,
         num_heads=8,
