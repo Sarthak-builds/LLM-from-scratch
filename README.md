@@ -169,11 +169,11 @@ Being honest about where this actually is:
 
 ## Credits
 
-The architecture and training recipe follow *Build a Large Language Model (From
-Scratch)* by Sebastian Raschka, whose text is in `assets/llm-book.txt`. The
-SwiGLU feed-forward follows Shazeer, *GLU Variants Improve Transformer*
-(arXiv:2002.05202), as used in LLaMA. The optimizer hyperparameters and
-warmup/cosine schedule follow nanoGPT. The corpus is
-[WikiText-103](https://huggingface.co/datasets/Salesforce/wikitext) (CC-BY-SA-4.0).
-The GPT-2 BPE tokenizer is OpenAI's `tiktoken` release — a tokenizer only, no
-model weights are used.
+The architecture and the planned training recipe follow *Build a Large
+Language Model (From Scratch)* by Sebastian Raschka, whose text is in
+`assets/llm-book.txt`. The SwiGLU feed-forward follows Shazeer, *GLU Variants
+Improve Transformer* (arXiv:2002.05202), as used in LLaMA. The (planned)
+optimizer hyperparameters and warmup/cosine schedule follow nanoGPT. The
+corpus is [WikiText-103](https://huggingface.co/datasets/Salesforce/wikitext)
+(CC-BY-SA-4.0). The GPT-2 BPE tokenizer is OpenAI's `tiktoken` release — a
+tokenizer only, no model weights are used.
