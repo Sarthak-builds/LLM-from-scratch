@@ -91,7 +91,11 @@ SwiGLU : 3 x 768 x 2048 = 4,718,592    <- identical
 So the feed-forward costs the same as in GPT-2 small, and the model stays at
 124M. `src/llm_from_scratch/LLM_architecture/swiglu.py` has the derivation.
 
-## Training setup
+## Training setup (planned)
+
+None of this is running yet — the model and the loop don't exist. This is the
+recipe the pretraining code is being written against, sized for a single
+Google Colab T4 (16 GB VRAM):
 
 | | |
 |---|---|
@@ -104,8 +108,8 @@ So the feed-forward costs the same as in GPT-2 small, and the model stays at
 
 The precision choice is forced by the hardware, not a preference: the T4 is
 `sm_75`, and bf16 tensor cores only exist from `sm_80`. fp16 underflows in the
-backward pass, so the loss must be rescaled. See the module docstring in
-`src/llm_from_scratch/pretraining/train.py`.
+backward pass, so the loss must be rescaled. The rationale for every number is
+sketched in `GPT_CONFIG_124M`'s docstring.
 
 ## Layout
 
