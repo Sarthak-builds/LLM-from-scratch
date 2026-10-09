@@ -34,33 +34,26 @@ in [Limitations](#limitations) rather than hidden.
 
 ## Quick start
 
-Training runs on a GPU. It was developed against a single Google Colab T4
-(16 GB), and [`COLAB.md`](COLAB.md) is the full walkthrough including how to
-survive session preemption.
+Everything below needs nothing but CPU and an internet connection for step 1.
+When the model and training loop land, they'll be added here — the plan is
+documented in [`COLAB.md`](COLAB.md).
 
 ```bash
-# 1. fetch + tokenize WikiText-103 (~190 MB download, writes a ~229 MB .bin)
+# 1. fetch + tokenize WikiText-103 (~190 MB download, writes uint16 .bin files)
 python -m llm_from_scratch.data.wikitext_prepare --out-dir data/wikitext
 
-# 2. inspect the loaders without touching a GPU
+# 2. inspect the memmap windowed loaders (CPU only)
 python -m llm_from_scratch.data.wikitext_dataloader --data-dir data/wikitext
 
-# 3. train (~12 h for 2 epochs on a T4; resumes from checkpoints/latest.pt)
-python -m llm_from_scratch.pretraining.train
-
-# 4. plot the curves
-python -m llm_from_scratch.pretraining.loss_plots --log train_log.jsonl
-
-# 5. sample
-sarthllm "The capital of France is" --checkpoint checkpoints/best.pt
+# 3. see the whole input pipeline print its stages: raw text -> tiktoken ->
+#    dataloader -> token + positional embeddings -> input context embedding
+uv run python scripts/pipeline_demo.py
 ```
 
-A 5-minute smoke test before committing GPU hours:
+A 2-minute smoke test before downloading the whole 103M-word corpus:
 
 ```bash
 python -m llm_from_scratch.data.wikitext_prepare --out-dir data/wikitext --shard 0.02
-python -m llm_from_scratch.pretraining.train --data-dir data/wikitext \
-    --max-steps 50 --eval-interval 25 --log-interval 5
 ```
 
 ## Architecture
