@@ -126,6 +126,8 @@ committing to a 12-hour run.
 
 ## 2. Train
 
+*Not implemented yet — planned interface:*
+
 ```bash
 python -m llm_from_scratch.pretraining.train \
     --data-dir /content/wikitext \
@@ -190,6 +192,8 @@ is 824 MB in fp16, and `cross_entropy` upcasts it to fp32. If you have room,
 ---
 
 ## 3. Survive a preemption
+
+*Not implemented yet — the checkpoint/resume design below is the plan.*
 
 This is the part that decides whether the project gets finished.
 
@@ -295,11 +299,11 @@ session that can be preempted at any moment.
 ## Command reference
 
 ```bash
-# data
+# works today
 python -m llm_from_scratch.data.wikitext_prepare --out-dir DIR [--shard 0.02]
 python -m llm_from_scratch.data.wikitext_dataloader --data-dir DIR
 
-# training
+# planned (once pretraining/ exists)
 python -m llm_from_scratch.pretraining.train --data-dir DIR --resume
     [--epochs 3] [--max-steps N] [--micro-batch 16] [--accum-steps 8]
     [--block-size 512] [--lr 3e-4] [--dropout 0.0] [--precision auto]
