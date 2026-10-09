@@ -1,7 +1,7 @@
 [project]
 name = "llm-from-scratch"
 version = "0.1.0"
-description = "Add your description here"
+description = "sarthLLM — a GPT built from scratch and pretrained on WikiText-103"
 readme = "README.md"
 authors = [
     { name = "Sarthak-builds", email = "sarthakshiroty04@gmail.com" }
