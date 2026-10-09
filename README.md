@@ -1,25 +1,36 @@
 # sarthLLM
 
-A GPT built from scratch — tokenizer, embeddings, causal multi-head attention,
-transformer blocks, SwiGLU feed-forward, AdamW, a training loop, and a CLI —
-then pretrained on **WikiText-103** and nothing else. No pretrained weights are
-downloaded or loaded at any point; every parameter here is learned from
-scratch on the corpus you prepare.
+A GPT built from scratch. "From scratch" means the weights, not just the
+layers — tokenizer, embeddings, causal multi-head attention, LayerNorm,
+SwiGLU, and (eventually) the pretraining loop are all in this repo. No
+pretrained weights are downloaded or loaded at any point.
 
-124,000,512 parameters. ~124M.
+Follows *Build a Large Language Model (From Scratch)* by Sebastian Raschka —
+the book text ships in `assets/llm-book.txt` — with a few deliberate detours
+(SwiGLU instead of GELU, WikiText-103 instead of the book's tiny corpus).
 
-## What it does, and what it does not
+## Where we are
 
-It **continues text**. That is the whole interface.
+The input half of the pipeline is built and runs end to end. The model half
+is what's being written next.
 
-```console
-$ sarthllm "The capital of France is"
-  the capital of France is a city that has been the seat of government ...
-```
+| stage | status |
+|---|---|
+| BPE tokenizer (tiktoken `gpt2`) + hand-rolled regex BPE experiment | done |
+| sliding-window dataloader over raw text | done |
+| WikiText-103 -> uint16 `.bin` + memmap windowed loader | done |
+| token + positional embeddings, logits tied to token weights | done |
+| attention: simple -> learnable -> causal masked -> multi-head | done |
+| LayerNorm, SwiGLU | done |
+| sampling: greedy + top-k/temperature | done |
+| `GPT_CONFIG_124M` | done (the target, nothing trains on it yet) |
+| FFN + transformer block + `GPT` class | next |
+| pretraining loop, loss curves, checkpoints | next |
+| `sarthllm` CLI | next |
 
-It does **not** chat, follow instructions, or answer questions reliably. See
-[Limitations](#limitations) — this is a deliberate scope decision, documented
-rather than hidden.
+It will eventually **continue text**. It will not chat, follow instructions,
+or answer questions reliably — that is a deliberate scope decision, documented
+in [Limitations](#limitations) rather than hidden.
 
 ## Quick start
 
