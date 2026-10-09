@@ -1,5 +1,13 @@
 # Training sarthLLM on Google Colab
 
+> **Status: this is the plan, not the reality.** The model class and pretraining
+> loop aren't written yet, so none of the commands below run today. This file is
+> the walkthrough the training code is being built against — every command is
+> the intended interface. When `pretraining/` lands, this doc becomes print-ready.
+>
+> The parts that *do* exist already: `wikitext_prepare` (creates the `.bin`
+> files) and `wikitext_dataloader` (reads them). Those two commands work now.
+
 Complete walkthrough for pretraining a 124M GPT on WikiText-103 on a single
 Colab T4. Every command below is the real thing — no pseudocode.
 
