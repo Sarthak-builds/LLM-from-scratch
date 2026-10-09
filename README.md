@@ -135,24 +135,37 @@ It is gitignored — those are working notes, not part of the package.
 
 ## Limitations
 
-Stated up front, because the failure modes are predictable and worth writing
-down.
+Being honest about where this actually is:
 
+- **There is no trained model.** The FFN, transformer block and `GPT` class
+  aren't written, so nothing generates text yet. The loss, perplexity and
+  sample-output sections elsewhere in these docs describe the intended
+  end state, not measured results.
+- **Two scales are in the repo on purpose.** The `data/` embeddings demo runs
+  at `EMBED_DIM=256, MAX_LENGTH=256` on the book text; the attention and
+  `LLM_architecture` modules are the GPT-2-small-sized building blocks
+  (768/512/12). They aren't wired together yet, so don't read the demo's
+  numbers as the model's.
+- **Once trained, it will produce fluent nonsense.** Wikipedia prose is
+  predictable enough that surface grammar and topic drift look right. That is
+  not the same as being correct. It is a next-token predictor with no
+  instruction tuning and no chat template.
 - **Under-trained by design.** 124M parameters against roughly 130M training
   tokens is about **1 token per parameter**. Chinchilla's rule of thumb is 20.
-  The model is compute-limited, and this run is what fits in a 12-hour
-  Colab session, not what the architecture could absorb with 2.4B tokens.
-- **It will produce fluent nonsense.** Wikipedia prose is predictable enough
-  that surface grammar, syntax and topic drift all look right. That is not the
-  same as being correct. Ask it a factual question and it will sometimes
-  answer with confident, well-formed, wrong text.
-- **No instruction tuning.** There is no chat template, no system prompt, no
-  turn structure. It is a next-token predictor and nothing more.
-- **512-token memory.** Prompts longer than 512 tokens raise rather than being
-  silently truncated.
+  It is compute-limited by what fits in a 12-hour Colab session.
 - **Not Chinchilla-comparable.** Published WikiText-103 perplexities are
-  word-normalised; this is a BPE cross-entropy. The two are different
-  quantities and the numbers are not comparable.
+  word-normalised; this is a BPE cross-entropy. Different quantities, not
+  comparable numbers.
+
+## Next up
+
+1. Feed-forward + a pre-norm transformer block that composes attention,
+   LayerNorm and SwiGLU.
+2. A `GPT` class that stacks the block and ties the output head to the token
+   embedding.
+3. The pretraining loop: LR warmup/cosine, fp16 `GradScaler`, checkpointing,
+   resumable runs.
+4. Loss/perplexity curves and the `sarthllm` CLI.
 
 ## Credits
 
