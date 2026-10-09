@@ -116,16 +116,17 @@ sketched in `GPT_CONFIG_124M`'s docstring.
 ```
 src/llm_from_scratch/
   Attention/           self-attention built up: no params -> one head -> causal -> multi-head
-  data/                tokenization, sliding-window dataset, WikiText prepare + dataloader
+  data/                tokenizer, sliding-window dataset, embeddings, WikiText prepare + memmap loader
   tokenization/        standalone BPE experiments (regex, tiktoken)
-  LLM_architecture/    GELU-free stack: config, LayerNorm, SwiGLU, FFN, block, GPT, generation
-  pretraining/         LR schedule, training loop, loss/perplexity, evaluation, plots
-  cli.py               the sarthllm command
+  LLM_architecture/    config, LayerNorm, SwiGLU, text-generation sampling
+  _paths.py            repo/assets paths (project root, the book text)
+scripts/
+  pipeline_demo.py     prints every stage of the input pipeline end to end
 ```
 
 `Attention/` is a progression, not a pile of alternatives: each file adds one
-idea to the one before it, and only `multi_head_attention.py` is used by the
-trained model.
+idea to the one before it, and only `multi_head_attention.py` feeds into the
+model.
 
 ## Study notes
 
