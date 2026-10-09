@@ -58,6 +58,12 @@ python -m llm_from_scratch.data.wikitext_prepare --out-dir data/wikitext --shard
 
 ## Architecture
 
+This is the **target**: `GPT_CONFIG_124M` in
+`src/llm_from_scratch/LLM_architecture/gpt_config.py`. Of the pieces in the
+table, LayerNorm, SwiGLU and causal multi-head attention exist today; the
+transformer block that wires them together and the `GPT` class that stacks
+them do not yet.
+
 | | |
 |---|---|
 | layers | 12 |
@@ -69,6 +75,9 @@ python -m llm_from_scratch.data.wikitext_prepare --out-dir data/wikitext --shard
 | normalisation | LayerNorm, pre-norm |
 | weight tying | output head shares the token embedding |
 | dropout | 0.0 |
+
+The attention modules are built at a small demo scale on the way up (an
+unstructured demo on the book text first, then at GPT-2 size).
 
 The SwiGLU hidden width is `8/3 x 768 = 2048` rather than the usual
 `4 x 768 = 3072`, because a gated feed-forward needs three projection matrices
